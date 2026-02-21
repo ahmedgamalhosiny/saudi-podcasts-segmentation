@@ -1,0 +1,21 @@
+[project]
+name = "audio-segmentation"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "datasets==3.0.2",
+    "ffmpeg-python==0.2.0",
+    "numpy==1.26.4",
+    "pandas==2.2.2",
+    "pydub==0.25.1",
+    "soundfile==0.12.1",
+    "torch==2.3.0",
+    "torchaudio==2.3.0",
+    "tqdm==4.66.1",
+    "whisperx",
+]
+
+[tool.uv.sources]
+whisperx = { git = "https://github.com/m-bain/whisperx.git" }

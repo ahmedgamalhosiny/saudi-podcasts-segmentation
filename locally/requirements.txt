@@ -1,0 +1,12 @@
+torch==2.3.0
+torchaudio==2.3.0
+pandas==2.2.2
+numpy==1.26.4
+datasets==3.0.2
+git+https://github.com/m-bain/whisperx.git
+pydub==0.25.1
+soundfile==0.12.1
+tqdm==4.66.1
+jupyterlab==4.2.5
+ipywidgets==8.1.5
+python-dotenv==1.0.1

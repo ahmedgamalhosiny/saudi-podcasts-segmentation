@@ -1,0 +1,44 @@
+FROM nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.11 \
+    python3.11-venv \
+    python3-pip \
+    ffmpeg \
+    git \
+    curl \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+
+ENV PATH="/root/.cargo/bin:$PATH"
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN uv venv /venv && \
+    . /venv/bin/activate && \
+    uv pip install --system -r requirements.txt && \
+    uv pip install --system git+https://github.com/m-bain/whisperx.git
+
+RUN mkdir -p /app/zips /app/segments && \
+    . /venv/bin/activate && \
+    pip install --no-cache-dir gdown && \
+    gdown --folder https://drive.google.com/drive/folders/189w9yJE6LGyG3XM589aCIO_eI63Tkkff -O /app/zips --quiet && \
+    for zipfile in /app/zips/*.zip; do \
+        unzip -q "$zipfile" -d /app/segments || true; \
+    done
+
+COPY notebook.ipynb .
+COPY README.md .
+COPY requirements.txt .
+
+EXPOSE 8888
+
+CMD ["/venv/bin/jupyter", "lab", "--ip=0.0.0.0", "--allow-root", "--no-browser", "--NotebookApp.token=''"]
