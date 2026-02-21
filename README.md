@@ -90,7 +90,6 @@ Steps:
 3. Create and sync the virtual environment:
    uv venv
    source .venv/bin/activate # Linux/Mac
-   # or on Windows: .venv\Scripts\activate
    uv pip sync requirements.txt
 4. (Optional) Install Jupyter kernel for VS Code:
    uv pip install ipykernel
